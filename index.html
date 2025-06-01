@@ -122,6 +122,7 @@
             opacity: 0;
             transform: translateY(50px);
             transition: opacity 0.6s ease, transform 0.6s ease;
+            z-index: 1;
         }
 
         section.visible {
@@ -267,11 +268,28 @@
             color: #ff4040;
         }
 
+        section#chart {
+            padding: 3rem;
+            margin: 1.5rem auto;
+            max-width: 1200px;
+            border: 4px solid #000000;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 6px 6px #ffd700;
+            position: relative;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
         .chart-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             background: #ffffff;
+            width: 100%;
         }
 
         #dexscreener-embed {
@@ -279,7 +297,27 @@
             width: 100%;
             max-width: 1200px;
             padding-bottom: 50%;
-            margin: 2rem auto;
+            margin: 2rem 0;
+        }
+
+        #dexscreener-embed iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border: 0;
+        }
+
+        #dexscreener-embed p {
+            display: none;
+            text-align: center;
+            color: #ff4040;
+            font-size: 1.5rem;
+        }
+
+        #dexscreener-embed iframe:not([src]) + p {
+            display: block;
         }
 
         @media (min-width: 1400px) {
@@ -293,15 +331,12 @@
                 max-width: 100%;
                 padding-bottom: 150%;
             }
-        }
 
-        #dexscreener-embed iframe {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            border: 0;
+            section#chart {
+                padding: 1.5rem;
+                margin: 0.8rem auto;
+                min-height: 350px;
+            }
         }
 
         .cta-button {
@@ -491,10 +526,6 @@
                 font-size: 1.4rem;
             }
 
-            .chart-section {
-                padding: 1.5rem;
-            }
-
             .cta-button {
                 font-size: 1.5rem;
                 padding: 0.6rem 1rem;
@@ -645,7 +676,7 @@
 
     <section id="home" class="hero">
         <div class="content-container">
-            <h1>$DWARFY: COMMUNITY TAKEOVER (CTO)</h1>
+            <h2>$DWARFY: COMMUNITY TAKEOVER (CTO)</h2>
             <p>FROM MATT FURIE’S WHIMSICAL WORLD OF ‘THE NIGHT RIDERS’</p>
             <div class="copy-ca" onclick="copyCA()">0x081c61bc3c241a4e329e11123e0961dee8d2407f9cb3e33c84306cd473da8075::dwarfy::DWARFY</div>
         </div>
@@ -692,13 +723,14 @@
         <a href="#buy-now" class="cta-button">BUY NOW!</a>
     </section>
 
-    <section id="chart" class="chart-section" style="margin-right: 10%;">
+    <section id="chart" class="chart-section">
         <div class="content-container">
             <h2>CHART</h2>
             <p>Track $DWARFY's performance in real-time!</p>
         </div>
         <div id="dexscreener-embed">
             <iframe src="https://dexscreener.com/sui/0x44066d44bf9a26deec3830096e53b961b069137cee364d1a18813616b959cf4f?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"></iframe>
+            <p>Unable to load chart. Please check your connection or try again later.</p>
         </div>
         <a href="#buy-now" class="cta-button">BUY NOW!</a>
     </section>
@@ -777,6 +809,14 @@
 
         sections.forEach(section => {
             observer.observe(section);
+        });
+
+        // Ensure chart section is visible on load as fallback
+        window.addEventListener('load', () => {
+            const chartSection = document.getElementById('chart');
+            if (chartSection) {
+                chartSection.classList.add('visible');
+            }
         });
 
         // Background zoom effect
