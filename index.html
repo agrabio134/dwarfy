@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$DWARFY - Matt Furie's Community Takeover</title>
+    <link rel="icon" type="image/png" href="assets/IMG_0977.png">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Bangers', cursive;
+            color: #000000;
+            overflow-x: hidden;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                transparent 20%,
+                #1e90ff 20%,
+                #1e90ff 80%,
+                transparent 80%,
+                transparent 100%
+            );
+        }
+
+        .background-top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 20vh;
+            background: url('assets/bg2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -1;
+            transition: transform 0.1s ease-out;
+        }
+
+        .background-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20vh;
+            background: url('assets/bg4.jpg') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -1;
+            transition: transform 0.1s ease-out;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: #1e90ff;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 4px solid #ffd700;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            color: #ffffff;
+            text-shadow: 1px 1px #000000;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            text-shadow: 1px 1px #000000;
+            transition: transform 0.2s;
+        }
+
+        .nav-links a:not(.nav-cta):hover {
+            transform: scale(1.1);
+        }
+
+        .nav-links .nav-cta {
+            background: #ffd700;
+            color: #000000;
+            padding: 0.5rem 1rem;
+            border: 3px solid #000000;
+            box-shadow: 4px 4px #1e90ff;
+            transition: transform 0.2s;
+        }
+
+        .nav-links .nav-cta:hover {
+            transform: translateY(-5px);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        section {
+            padding: 3rem;
+            margin: 1.5rem;
+            border: 4px solid #000000;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 6px 6px #ffd700;
+            position: relative;
+            min-height: 400px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero {
+            background: url('assets/bg2.jpg'), rgba(30, 144, 255, 0.8);
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            color: #ffffff;
+            padding: 4rem;
+            margin-left: 5%;
+            margin-right: 15%;
+            border: 4px solid #000000;
+            box-shadow: 8px 8px #ffd700;
+            position: relative;
+            min-height: 500px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            text-shadow: 1px 1px #000000;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 1.8rem;
+            text-shadow: 1px 1px #000000;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero img {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            width: 200px;
+            z-index: 1;
+        }
+
+        .about img, .tokenomics img, .chart-section img, .how-to-buy img, .life-of-dwarf img, .buy-now img {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            width: 150px;
+            z-index: 1;
+        }
+
+        .content-container {
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .copy-ca {
+            display: inline-block;
+            background: #ffd700;
+            color: #000000;
+            padding: 0.5rem 1rem;
+            font-size: 1.5rem;
+            border: 3px solid #000000;
+            box-shadow: 4px 4px #1e90ff;
+            cursor: pointer;
+            margin: 1rem 0;
+            max-width: 100%;
+            word-wrap: break-word;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .copy-ca:hover {
+            transform: translateY(-5px);
+        }
+
+        .copy-ca.copied::after {
+            content: 'Copied!';
+            position: absolute;
+            top: -2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e90ff;
+            color: #ffffff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .hero .social-links a {
+            color: #ffffff;
+            text-shadow: 1px 1px #000000;
+        }
+
+        .tokenomics {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #ffffff;
+            padding: 0;
+        }
+
+        .tokenomics .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 900px;
+            width: 100%;
+            margin: 2rem;
+        }
+
+        .tokenomics .card {
+            background: linear-gradient(135deg, rgba(30, 144, 255, 0.95), rgba(255, 215, 0, 0.85));
+            border: 4px solid #000000;
+            box-shadow: 6px 6px #ffd700;
+            padding: 1.5rem;
+            border-radius: 15px;
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .tokenomics .content-container {
+            text-align: center;
+        }
+
+        .tokenomics p {
+            font-size: 1.6rem;
+            margin-top: 1rem;
+        }
+
+        .tokenomics .card strong {
+            color: #ff4040;
+        }
+
+        .chart-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #ffffff;
+        }
+
+        #dexscreener-embed {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            padding-bottom: 50%;
+            margin: 2rem auto;
+        }
+
+        @media (min-width: 1400px) {
+            #dexscreener-embed {
+                padding-bottom: 65%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #dexscreener-embed {
+                max-width: 100%;
+                padding-bottom: 150%;
+            }
+        }
+
+        #dexscreener-embed iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border: 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #ffd700;
+            color: #000000;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            font-size: 1.8rem;
+            border: 3px solid #000000;
+            box-shadow: 4px 4px #1e90ff;
+            transition: transform 0.2s;
+            position: absolute;
+            right: 2rem;
+            bottom: 2rem;
+            z-index: 1;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+        }
+
+        .social-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: flex-start;
+            gap: 1rem;
+            flex-wrap: wrap;
+            position: absolute;
+            left: 2rem;
+            bottom: 2rem;
+            z-index: 1;
+        }
+
+        .social-links a {
+            color: #1e90ff;
+            font-size: 1.5rem;
+            text-shadow: 1px 1px #000000;
+            transition: transform 0.2s;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        .social-links i {
+            margin-right: 0.5rem;
+        }
+
+        h2 {
+            font-size: 3rem;
+            color: #1e90ff;
+            text-shadow: 1px 1px #000000;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            position: relative;
+            z-index: 1;
+        }
+
+        p {
+            font-size: 1.6rem;
+            line-height: 1.4;
+            margin: 0 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        strong {
+            color: #ff4040;
+            text-shadow: 1px 1px #000000;
+        }
+
+        footer {
+            background: url('assets/bg4.jpg'), rgba(30, 144, 255, 0.8);
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            color: #ffffff;
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.5rem;
+            text-shadow: 1px 1px #000000;
+            border-top: 4px solid #ffd700;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: row;
+                padding: 0.6rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: #1e90ff;
+                padding: 1rem 0;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                border-top: 2px solid #ffd700;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                font-size: 1.3rem;
+                padding: 0.5rem;
+                text-align: center;
+            }
+
+            .nav-links .nav-cta {
+                font-size: 1.3rem;
+                padding: 0.5rem 1rem;
+                margin: 0.5rem auto;
+            }
+
+            .hero {
+                padding: 2rem;
+                margin-left: 3%;
+                margin-right: 3%;
+                min-height: 400px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.5rem;
+            }
+
+            .hero img {
+                width: 120px;
+                right: 0.5rem;
+                top: 0.5rem;
+            }
+
+            .about img, .tokenomics img, .chart-section img, 
+            .how-to-buy img, .life-of-dwarf img, .buy-now img {
+                position: static;
+                display: block;
+                margin: 1rem auto;
+                width: 120px;
+            }
+
+            .copy-ca {
+                font-size: 1.2rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .copy-ca.mobile-truncated::before {
+                content: '0x081...DWARFY';
+            }
+
+            .tokenomics .cards-container {
+                margin: 1rem;
+                gap: 0.8rem;
+            }
+
+            .tokenomics .card {
+                padding: 1rem;
+                min-width: 150px;
+                max-width: 100%;
+            }
+
+            .tokenomics p {
+                font-size: 1.3rem;
+            }
+
+            .chart-section {
+                padding: 1.5rem;
+            }
+
+            .cta-button {
+                font-size: 1.5rem;
+                padding: 0.6rem 1rem;
+                position: static;
+                margin-top: 1rem;
+                display: block;
+                text-align: center;
+            }
+
+            .content-container {
+                max-width: 100%;
+            }
+
+            section {
+                padding: 2rem;
+                margin: 0.8rem;
+                min-height: 350px;
+            }
+
+            h2 {
+                font-size: 2.2rem;
+            }
+
+            p {
+                font-size: 1.3rem;
+            }
+
+            .social-links {
+                position: static;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+
+            .social-links a {
+                font-size: 1.2rem;
+            }
+
+            footer {
+                font-size: 1.2rem;
+            }
+
+            .background-top, .background-bottom {
+                height: 15vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .nav-links a {
+                font-size: 1.1rem;
+            }
+
+            .nav-links .nav-cta {
+                font-size: 1.1rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .menu-toggle {
+                font-size: 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .hero img, .about img, .tokenomics img, .chart-section img, 
+            .how-to-buy img, .life-of-dwarf img, .buy-now img {
+                width: 100px;
+            }
+
+            .copy-ca {
+                font-size: 1rem;
+                padding: 0.3rem 0.8rem;
+            }
+
+            .tokenomics .cards-container {
+                margin: 0.8rem;
+            }
+
+            .tokenomics .card {
+                padding: 0.8rem;
+            }
+
+            .tokenomics p {
+                font-size: 1rem;
+            }
+
+            .cta-button {
+                font-size: 1.2rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            section {
+                padding: 1.5rem;
+                min-height: 300px;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .social-links a {
+                font-size: 1rem;
+            }
+
+            footer {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-top"></div>
+    <div class="background-bottom"></div>
+    <header>
+        <nav class="navbar">
+            <div class="logo">DWARFY ON SUI</div>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#tokenomics">TOKENOMICS</a></li>
+                <li><a href="#chart">CHART</a></li>
+                <li><a href="#how-to-buy">HOW TO BUY?</a></li>
+                <li><a href="#life-of-dwarf">LIFE OF DWARFY</a></li>
+                <li><a href="#buy-now" class="nav-cta">BUY NOW!</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="content-container">
+            <h1>$DWARFY: COMMUNITY TAKEOVER (CTO)</h1>
+            <p>FROM MATT FURIE’S WHIMSICAL WORLD OF ‘THE NIGHT RIDERS’</p>
+            <div class="copy-ca" onclick="copyCA()">0x081c61bc3c241a4e329e11123e0961dee8d2407f9cb3e33c84306cd473da8075::dwarfy::DWARFY</div>
+        </div>
+        <img src="assets/IMG_0977.png" alt="Cartoon Character">
+        <a href="#buy-now" class="cta-button">BUY NOW!</a>
+        <div class="social-links">
+            <a href="https://t.me/DuarfyCTOonSUI" target="_blank"><i class="fab fa-telegram-plane"></i>TELEGRAM</a>
+            <a href="https://x.com/DWARFYCTO_SUI" target="_blank"><i class="fab fa-x-twitter"></i>X</a>
+            <a href="https://birdeye.so" target="_blank"><i class="fas fa-eye"></i>BIRDEYE</a>
+            <a href="https://dexscreener.com" target="_blank"><i class="fas fa-chart-line"></i>DEX</a>
+            <a href="https://turbos.finance" target="_blank"><i class="fas fa-tachometer-alt"></i>TURBOS</a>
+        </div>
+    </section>
+
+    <section id="about" class="about" style="margin-left: 10%;">
+        <div class="content-container">
+            <h2>ABOUT $DWARFY</h2>
+            <p>$DWARFY, BORN FROM MATT FURIE’S ICONIC ‘THE NIGHT RIDERS,’ IS NOW A <strong>COMMUNITY TAKEOVER (CTO)</strong> PROJECT! JOIN THE COMMUNITY-DRIVEN MOVEMENT TO TAKE THIS TOKEN TO THE MOON. EMBRACE THE WHIMSY, JOIN THE RIDE!</p>
+        </div>
+        <img src="assets/5888524068783770568-1024x731.webp" alt="Dwarfy Image 2">
+        <a href="#buy-now" class="cta-button">BUY NOW!</a>
+    </section>
+
+    <section id="tokenomics" class="tokenomics" style="margin-right: 10%;">
+        <div class="content-container">
+            <h2>TOKENOMICS</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <p><strong>Total Supply:</strong> 1,000,000,000 $DWARFY</p>
+                </div>
+                <div class="card">
+                    <p><strong>Liquidity:</strong> Permanently Locked</p>
+                </div>
+                <div class="card">
+                    <p><strong>Control:</strong> Community-Driven (CTO)</p>
+                </div>
+                <div class="card">
+                    <p><strong>Transparency:</strong> Fully Open and Auditable</p>
+                </div>
+            </div>
+            <p>Secure your $DWARFY tokens now and join the community revolution!</p>
+        </div>
+        <img src="assets/5888524068783770572.webp" alt="Dwarfy Image 4">
+        <a href="#buy-now" class="cta-button">BUY NOW!</a>
+    </section>
+
+    <section id="chart" class="chart-section" style="margin-right: 10%;">
+        <div class="content-container">
+            <h2>CHART</h2>
+            <p>Track $DWARFY's performance in real-time!</p>
+        </div>
+        <div id="dexscreener-embed">
+            <iframe src="https://dexscreener.com/sui/0x44066d44bf9a26deec3830096e53b961b069137cee364d1a18813616b959cf4f?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"></iframe>
+        </div>
+        <a href="#buy-now" class="cta-button">BUY NOW!</a>
+    </section>
+
+    <section id="how-to-buy" class="how-to-buy" style="margin-left: 5%;">
+        <div class="content-container">
+            <h2>HOW TO BUY?</h2>
+            <p>1. SET UP A SUI-COMPATIBLE WALLET (E.G., SUI WALLET).</p>
+            <p>2. FUND YOUR WALLET WITH SUI TOKENS.</p>
+            <p>3. VISIT A DEX LIKE TURBOS OR OTHERS LISTED BELOW.</p>
+            <p>4. SWAP SUI FOR $DWARFY TOKENS.</p>
+            <p>5. JOIN THE CTO AND HODL!</p>
+        </div>
+        <img src="assets/5888524068783770578-768x768.webp" alt="Dwarfy Image 7">
+        <div class="social-links">
+            <a href="https://turbos.finance" target="_blank"><i class="fas fa-tachometer-alt"></i>TURBOS</a>
+            <a href="https://dexscreener.com" target="_blank"><i class="fas fa-chart-line"></i>DEX</a>
+        </div>
+    </section>
+
+    <section id="life-of-dwarf" class="life-of-dwarf" style="margin-right: 5%;">
+        <div class="content-container">
+            <h2>LIFE OF DWARFY</h2>
+            <p>DWARFY, A QUIRKY CHARACTER FROM MATT FURIE’S UNIVERSE, LIVES FOR ADVENTURE AND COMMUNITY. WITH THE CTO, DWARFY’S LEGACY IS NOW IN THE HANDS OF THE COMMUNITY, DRIVING THE $DWARFY TOKEN TO NEW HEIGHTS!</p>
+        </div>
+        <img src="assets/5888524068783770583-768x768.webp" alt="Dwarfy Image 9">
+        <a href="#buy-now" class="cta-button">BUY NOW!</a>
+    </section>
+
+    <section id="buy-now" class="buy-now" style="margin-left: 8%;">
+        <div class="content-container">
+            <h2>JOIN THE $DWARFY CTO!</h2>
+            <p>BE PART OF THE COMMUNITY REVOLUTION. BUY $DWARFY NOW AND RIDE WITH US!</p>
+        </div>
+        <img src="assets/5888524068783770592-768x768.webp" alt="Dwarfy Image 10">
+        <a href="https://raidenx.io/sui/turbosfinance-dwarfy-sui-259073?ref=harvs" target="_blank" class="cta-button">BUY NOW!</a>
+        <div class="social-links">
+            <a href="https://t.me/DuarfyCTOonSUI" target="_blank"><i class="fab fa-telegram-plane"></i>TELEGRAM</a>
+            <a href="https://x.com/DWARFYCTO_SUI" target="_blank"><i class="fab fa-x-twitter"></i>X</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 $DWARFY CTO - POWERED BY THE COMMUNITY</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling for nav links
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.nav-links').classList.remove('active');
+                }
+            });
+        });
+
+        // Toggle menu for mobile
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Section transition on scroll
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Background zoom effect
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY;
+            const zoomScale = 1 + scrollPosition / 5000;
+            document.querySelector('.background-top').style.transform = `scale(${zoomScale})`;
+            document.querySelector('.background-bottom').style.transform = `scale(${zoomScale})`;
+        });
+
+        // Copy CA functionality
+        function copyCA() {
+            const ca = '0x081c61bc3c241a4e329e11123e0961dee8d2407f9cb3e33c84306cd473da8075::dwarfy::DWARFY';
+            navigator.clipboard.writeText(ca).then(() => {
+                const copyButton = document.querySelector('.copy-ca');
+                copyButton.classList.add('copied');
+                setTimeout(() => {
+                    copyButton.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Apply mobile-specific Dexscreener iframe on mobile devices
+        function updateDexscreenerIframe() {
+            const isMobile = window.innerWidth <= 768;
+            const iframe = document.querySelector('#dexscreener-embed iframe');
+            if (isMobile) {
+                iframe.src = 'https://dexscreener.com/sui/0x44066d44bf9a26deec3830096e53b961b069137cee364d1a18813616b959cf4f?embed=1&loadChartSettings=0&trades=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15';
+            } else {
+                iframe.src = 'https://dexscreener.com/sui/0x44066d44bf9a26deec3830096e53b961b069137cee364d1a18813616b959cf4f?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15';
+            }
+        }
+
+        // Run on load and on resize
+        window.addEventListener('load', updateDexscreenerIframe);
+        window.addEventListener('resize', updateDexscreenerIframe);
+    </script>
+</body>
+</html>
